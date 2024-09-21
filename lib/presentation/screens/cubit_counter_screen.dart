@@ -15,27 +15,35 @@ class CubitCounterScreen extends StatelessWidget {
 }
 
 class _CubitCounterView extends StatelessWidget {
-  const _CubitCounterView({
-    super.key,
-  });
+  const _CubitCounterView();
+
+  void increaseCounterBy(BuildContext context, [int value = 1]) {
+    context.read<CounterCubit>().increaseBy(value);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final counterState = context.watch<CounterCubit>().state;
+    // NOTE: el uso de watch es para que el widget se redibuje cuando cambie el estado del cubit
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cubit Counter: ${counterState.transactionCounter}'),
+        title: context.select(
+          (CounterCubit value) {
+            return Text('Cubit Counter: $value');
+          },
+        ),
         actions: [
           IconButton(
-            onPressed: () => {},
+            onPressed: () => {context.read<CounterCubit>().reset()},
             icon: const Icon(Icons.refresh_outlined),
           )
         ],
       ),
       body: Center(
         child: BlocBuilder<CounterCubit, CounterState>(
+          // buildWhen: (previous, current) => previous.counter != current.counter,
           builder: (context, state) {
+            print('counter change');
             return Text('Counter value: ${state.counter}');
           },
         ),
@@ -45,24 +53,30 @@ class _CubitCounterView extends StatelessWidget {
         children: [
           FloatingActionButton(
             heroTag: '1',
-            onPressed: () {},
-            child: Text('+3'),
+            onPressed: () {
+              increaseCounterBy(context, 3);
+            },
+            child: const Text('+3'),
           ),
           const SizedBox(
             height: 15,
           ),
           FloatingActionButton(
             heroTag: '2',
-            onPressed: () {},
-            child: Text('+2'),
+            onPressed: () {
+              increaseCounterBy(context, 2);
+            },
+            child: const Text('+2'),
           ),
           const SizedBox(
             height: 15,
           ),
           FloatingActionButton(
             heroTag: '3',
-            onPressed: () {},
-            child: Text('+1'),
+            onPressed: () {
+              increaseCounterBy(context, 1);
+            },
+            child: const Text('+1'),
           ),
         ],
       ),
