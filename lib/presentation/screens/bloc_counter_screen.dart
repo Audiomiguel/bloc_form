@@ -9,7 +9,7 @@ class BlocCounterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => CounterBloc(),
-      child: BlocCounterView(),
+      child: const BlocCounterView(),
     );
   }
 }

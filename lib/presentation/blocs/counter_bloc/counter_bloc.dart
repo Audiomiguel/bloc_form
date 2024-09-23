@@ -5,7 +5,7 @@ part 'counter_event.dart';
 part 'counter_state.dart';
 
 class CounterBloc extends Bloc<CounterEvent, CounterState> {
-  CounterBloc() : super(CounterState()) {
+  CounterBloc() : super(const CounterState()) {
     on<CounterIncreased>(_onCounterIncrease);
     on<CounterReset>(_onCounterReset);
   }
@@ -26,6 +26,6 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   }
 
   void resetCounter() {
-    add(CounterReset());
+    add(const CounterReset());
   }
 }
